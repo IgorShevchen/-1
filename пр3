@@ -1,0 +1,81 @@
+using System; 
+
+using System.Text; 
+
+ 
+
+class Program 
+
+{ 
+
+    static void Main(string[] args) 
+
+    { 
+
+        Console.OutputEncoding = Encoding.UTF8; 
+
+        // створюємо масив з випадковими цілими числами 
+
+        int[] arr = new int[10]; 
+
+        Random rnd = new Random(); 
+
+        for (int i = 0; i < arr.Length; i++) 
+
+        { 
+
+            arr[i] = rnd.Next(0, 101); 
+
+        } 
+
+ 
+
+        // виводимо масив на екран 
+
+        Console.WriteLine("Масив до заміни:"); 
+
+        Console.WriteLine(string.Join(", ", arr)); 
+
+ 
+
+        // сортуємо масив у порядку спадання 
+
+        Array.Sort(arr); 
+
+        Array.Reverse(arr); 
+
+ 
+
+        // знаходимо третій за величиною елемент масиву 
+
+        int thirdLargest = arr[2]; 
+
+ 
+
+        // замінюємо всі елементи масиву, які менші за третій за величиною елемент, на значення третього елемента 
+
+        for (int i = 0; i < arr.Length; i++) 
+
+        { 
+
+            if (arr[i] < thirdLargest) 
+
+            { 
+
+                arr[i] = thirdLargest; 
+
+            } 
+
+        } 
+
+ 
+
+        // виводимо масив на екран після заміни 
+
+        Console.WriteLine("Масив після заміни:"); 
+
+        Console.WriteLine(string.Join(", ", arr)); 
+
+    } 
+
+} 
