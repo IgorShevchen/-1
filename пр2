@@ -1,0 +1,217 @@
+using System; 
+
+class Point 
+
+{ 
+
+    public double x, y; 
+
+ 
+
+    public Point(double x, double y) 
+
+    { 
+
+        this.x = x; 
+
+        this.y = y; 
+
+    } 
+
+} 
+
+ 
+
+class Circle 
+
+{ 
+
+    public Point center; 
+
+    public double radius; 
+
+ 
+
+    public Circle(Point center, double radius) 
+
+    { 
+
+        this.center = center; 
+
+        this.radius = radius; 
+
+    } 
+
+} 
+
+ 
+
+class Program 
+
+{ 
+
+    static Point[] GeneratePoints(int n, int max) 
+
+    { 
+
+        Random rnd = new Random(); 
+
+        Point[] points = new Point[n]; 
+
+ 
+
+        for (int i = 0; i < n; i++) 
+
+        { 
+
+            double x = rnd.NextDouble() * max; 
+
+            double y = rnd.NextDouble() * max; 
+
+            points[i] = new Point(x, y); 
+
+        } 
+
+ 
+
+        return points; 
+
+    } 
+
+ 
+
+    static Circle CircleFromPoints(Point a, Point b, Point c) 
+
+    { 
+
+        double d = 2 * (a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y)); 
+
+        if (d == 0) 
+
+        { 
+
+            return null; 
+
+        } 
+
+ 
+
+        double x = ((a.x * a.x + a.y * a.y) * (b.y - c.y) + (b.x * b.x + b.y * b.y) * (c.y - a.y) + (c.x * c.x + c.y * c.y) * (a.y - b.y)) / d; 
+
+        double y = ((a.x * a.x + a.y * a.y) * (c.x - b.x) + (b.x * b.x + b.y * b.y) * (a.x - c.x) + (c.x * c.x + c.y * c.y) * (b.x - a.x)) / d; 
+
+ 
+
+        double radius = Math.Sqrt(Math.Pow(a.x - x, 2) + Math.Pow(a.y - y, 2)); 
+
+        return new Circle(new Point(x, y), radius); 
+
+    } 
+
+    static Circle FindCircleWithMostPoints(Point[] points) 
+
+    { 
+
+        Circle bestCircle = null; 
+
+        int bestCount = 0; 
+
+        for (int i = 0; i < points.Length - 2; i++) 
+
+        { 
+
+            for (int j = i + 1; j < points.Length - 1; j++) 
+
+            { 
+
+                for (int k = j + 1; k < points.Length; k++) 
+
+                { 
+
+                    Circle circle = CircleFromPoints(points[i], points[j], points[k]); 
+
+                    if (circle == null) 
+
+                    { 
+
+                        continue; 
+
+                    } 
+
+ 
+
+                    int count = 0; 
+
+                    for (int m = 0; m < points.Length; m++) 
+
+                    { 
+
+                        if (Math.Sqrt(Math.Pow(points[m].x - circle.center.x, 2) + Math.Pow(points[m].y - circle.center.y, 2)) <= circle.radius + 0.00001) 
+
+                        { 
+
+                            count++; 
+
+                        } 
+
+                    } 
+
+ 
+
+                    if (count > bestCount) 
+
+                    { 
+
+                        bestCount = count; 
+
+                        bestCircle = circle; 
+
+                    } 
+
+                } 
+
+            } 
+
+        } 
+
+ 
+
+        return bestCircle; 
+
+    } 
+
+ 
+
+    static void Main(string[] args) 
+
+    { 
+
+        Point[] points = GeneratePoints(200, 100); 
+
+ 
+
+        Console.WriteLine("Generated points:"); 
+
+        foreach (Point point in points) 
+
+        { 
+
+            Console.WriteLine("(" + point.x + ", " + point.y + ")"); 
+
+        } 
+
+ 
+
+        Circle circle = FindCircleWithMostPoints(points); 
+
+ 
+
+        Console.WriteLine("Circle with most points:"); 
+
+        Console.WriteLine("Center: (" + circle.center.x + ", " + circle.center.y + ")"); 
+
+        Console.WriteLine("Radius: " + circle.radius); 
+
+    } 
+
+} 
