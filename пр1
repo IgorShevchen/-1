@@ -1,0 +1,215 @@
+using System; 
+
+using System.Text; 
+
+ 
+
+class Program 
+
+{ 
+
+    static void Main(string[] args) 
+
+    { 
+
+        Console.OutputEncoding = Encoding.UTF8; 
+
+ 
+
+        int[] arr = new int[200]; 
+
+        Random rand = new Random(); 
+
+ 
+
+         
+
+        for (int i = 0; i < arr.Length; i++) 
+
+        { 
+
+            arr[i] = rand.Next(101); 
+
+        } 
+
+ 
+
+        Console.WriteLine("Вхідний масив:"); 
+
+        for (int i = 0; i < arr.Length; i++) 
+
+        { 
+
+            Console.Write(arr[i] + " "); 
+
+        } 
+
+ 
+
+         
+
+        int n = 10;  
+
+        int nthElement = QuickSelect(arr, n); 
+
+ 
+
+        Console.WriteLine("\n\n{0}-й за величиною елемент: {1}\n", n, nthElement); 
+
+ 
+
+         
+
+        for (int i = 0; i < arr.Length; i++) 
+
+        { 
+
+            if (arr[i] < nthElement) 
+
+            { 
+
+                arr[i] = nthElement; 
+
+            } 
+
+        } 
+
+ 
+
+        Console.WriteLine("Вихідний масив:"); 
+
+        for (int i = 0; i < arr.Length; i++) 
+
+        { 
+
+            Console.Write(arr[i] + " "); 
+
+        } 
+
+ 
+
+        Console.ReadKey(); 
+
+    } 
+
+ 
+
+     
+
+    static int QuickSelect(int[] arr, int n) 
+
+    { 
+
+        int left = 0; 
+
+        int right = arr.Length - 1; 
+
+ 
+
+        while (true) 
+
+        { 
+
+            if (left == right) 
+
+            { 
+
+                return arr[left]; 
+
+            } 
+
+ 
+
+            int pivotIndex = Partition(arr, left, right); 
+
+            if (n == pivotIndex) 
+
+            { 
+
+                return arr[pivotIndex]; 
+
+            } 
+
+            else if (n < pivotIndex) 
+
+            { 
+
+                right = pivotIndex - 1; 
+
+            } 
+
+            else 
+
+            { 
+
+                left = pivotIndex + 1; 
+
+            } 
+
+        } 
+
+    } 
+
+ 
+
+     
+
+    static int Partition(int[] arr, int left, int right) 
+
+    { 
+
+        int pivotIndex = left + (right - left) / 2; 
+
+        int pivotValue = arr[pivotIndex]; 
+
+ 
+
+        Swap(arr, pivotIndex, right); 
+
+ 
+
+        int storeIndex = left; 
+
+        for (int i = left; i < right; i++) 
+
+        { 
+
+            if (arr[i] < pivotValue) 
+
+            { 
+
+                Swap(arr, i, storeIndex); 
+
+                storeIndex++; 
+
+            } 
+
+        } 
+
+ 
+
+        Swap(arr, storeIndex, right); 
+
+ 
+
+        return storeIndex; 
+
+    } 
+
+ 
+
+     
+
+    static void Swap(int[] arr, int i, int j) 
+
+    { 
+
+        int temp = arr[i]; 
+
+        arr[i] = arr[j]; 
+
+        arr[j] = temp; 
+
+    } 
+
+} 
